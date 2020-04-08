@@ -1,5 +1,5 @@
 
-var config = require('../config/config')
+const config = require('../config/config')
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
 async function connect() {

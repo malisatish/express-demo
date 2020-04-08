@@ -1,8 +1,8 @@
 require('dotenv').config()
 
-var env = process.env.NODE_ENV
+const env = process.env.NODE_ENV
 // convert to uppercase
-var envString = env.toUpperCase()
+const envString = env.toUpperCase()
 module.exports = {
     // access the environment variables for this environment
     DB_HOST: process.env['DB_HOST_' + envString],
