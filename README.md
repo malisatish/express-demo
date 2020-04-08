@@ -1,9 +1,9 @@
 # express-demo
-## Requirements
+## Technology
 
 Node.js Version | NPM Version
 ------------ | -------------
-10+ | 6+
+12.14.1 | 6.13.4
 
 
 - [x] Project Setup
