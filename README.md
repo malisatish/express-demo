@@ -8,8 +8,8 @@ Node.js Version | NPM Version | MongoDB Version
 ## Features
 - [x] Project Setup
 - [x] Mongo  Connection Setup
-- [] Database Model - User, Post
-- [] API for store post data
-- [] API for show all post 
+- [x] Database Model - User, Post, Tag
+- [x] API for store post data
+- [x] API for show all post 
 - [] API for edit post data
 - [] API for delete post data
