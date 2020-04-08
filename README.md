@@ -1,4 +1,4 @@
 # express-demo
 
-- [] Project Setup
-- [] Mongo Db Setup
+- [x] Project Setup
+- [x] Mongo Db Setup & Setup Connection
