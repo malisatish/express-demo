@@ -7,14 +7,14 @@ const tagCtrl = require('../controller/tag.controller');
 router.get('/ping', (req,res,next)=>{
   res.send("pong");
 });
-router.post('/api/user',userCtrl.addUser);
-router.get('/api/user', userCtrl.getUser);
+router.post('/user',userCtrl.addUser);
+router.get('/user', userCtrl.getUser);
 
-router.post('/api/post', postCtrl.addPost);
-router.get('/api/post', postCtrl.getPost)
+router.post('/post', postCtrl.addPost);
+router.get('/post', postCtrl.getPost)
 
-router.post('/api/tag', tagCtrl.addTag);
-router.get('/api/tag', tagCtrl.getTag);
+router.post('/tag', tagCtrl.addTag);
+router.get('/tag', tagCtrl.getTag);
 
 
 router.all('*', (req, res) => {
