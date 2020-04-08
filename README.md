@@ -9,7 +9,6 @@ Node.js Version | NPM Version | MongoDB Version
 - [x] Project Setup
 - [x] Mongo  Connection Setup
 - [x] Database Model - User, Post, Tag
-- [x] API for store post data
-- [x] API for show all post 
-- [] API for edit post data
-- [] API for delete post data
+- [x] API for add and show all post data
+- [x] API for add user and show all user data
+- [x] API for add tags and show all tags data
