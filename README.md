@@ -15,9 +15,12 @@ Node.js Version | NPM Version | MongoDB Version
 - [x] API for add tags and show all tags data
 
 ## Installation
+```bash
 $ npm install
+```
 
 ## Running the app
+```bash
 # development
-$ NODE_ENV=dev npm start
+$ npm run start
 
