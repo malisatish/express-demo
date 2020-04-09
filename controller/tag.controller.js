@@ -14,10 +14,21 @@ module.exports = {
 
     getTag: async (req, res) => {
         try{
-            const result = await tagService.find()
+            const result = await tagService.find();
             handleSuccessOrErrorMessage(false, "All tags data", res, result );
         }catch(err){
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
+    },
+
+    deleteTag: async (req, res) => {
+        try{
+            let id = req.params.id;
+            const result = await tagService.remove(id)
+            handleSuccessOrErrorMessage(false, "Deleted tag data", res, result );
+        }catch(err){
+            handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
+        }
     }
+
 }

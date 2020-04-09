@@ -8,5 +8,9 @@ const self = module.exports = {
 
     find: async () => {
         return await TagModel.find();
+    },
+
+    remove: async (ObjectId) => {
+        return await TagModel.deleteOne({ _id: ObjectId});
     }
 }

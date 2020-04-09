@@ -1,5 +1,7 @@
 module.exports = {
-    handleSuccessOrErrorMessage(err, message, res, data,status,param) {
+    currentTimeStamp: ()=> Math.floor(new Date() / 1000),
+
+    handleSuccessOrErrorMessage: (err, message, res, data,status,param) => {
         if (!err) {
             response = {'error': false, 'message': message};
             if (typeof data !== undefined) {

@@ -8,18 +8,15 @@ const PostSchema = new Schema({
             type: String
         },
         tags: [],
-        deleted_by: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: false
+        createdAt: {
+            type: String
         },
-        deleted_at: {
+        updatedAt: {
+            type: String
+        },
+        deletedAt: {
             type: String
         }
-        
-    },
-    {
-        timestamps: true
     }
 );
 

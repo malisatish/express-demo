@@ -2,8 +2,8 @@ const { PostModel } = require('../models');
 
 const self = module.exports = {
     /* create new post */
-    create: async (postData) => {
-        return await PostModel.create(postData);
+    create: async (objData) => {
+        return await PostModel.create(objData);
     },  
 
     find: async () => {
@@ -14,7 +14,11 @@ const self = module.exports = {
         
     },
 
-    update: async () => {
-        
+    update: async (query = {}, objData = {}) => {
+        return await PostModel.findOneAndUpdate(query, {$set: objData}, {new: true});
     },
+
+    remove: async (query) => {
+        return await PostModel.deleteOne(query);
+    }
 }

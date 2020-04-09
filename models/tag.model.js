@@ -4,19 +4,16 @@ const TagSchema = new Schema({
         name: {
             type: String
         },
-        deleted_by: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: false
+        createdAt: {
+            type: String
         },
-        deleted_at: {
+        updatedAt: {
+            type: String
+        },
+        deletedAt: {
             type: String
         }
-    },
-    
-    {
-        timestamps: true
-    }
+    }    
 );
 
 const Tag = mongoose.model('Tag', TagSchema);
