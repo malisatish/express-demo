@@ -1,4 +1,4 @@
-const { postService } = require('../services');
+const { postService, tagService } = require('../services');
 const { PostModel } = require('../models');
 const { handleSuccessOrErrorMessage, currentTimeStamp } = require('../helper/helper');
 const { validationResult } = require('express-validator');
@@ -11,6 +11,12 @@ module.exports = {
                 return res.status(422).json({ errors: errors.array() });
             } else {
                 let objData = req.body;
+                if(objData.tags.length > 0){
+                    await tagService.insert(req.body.tags).then((result)=>{
+                        objData.tags = result;
+                    });
+                }
+                console.log("object", objData)
                 objData.createdAt = currentTimeStamp();
                 objData.updatedAt = currentTimeStamp();
                 const result = await postService.create(objData);
@@ -23,9 +29,14 @@ module.exports = {
 
     getPost: async (req, res) => {
         try{
-            let query = {deletedAt: { $exists: false}};
-            const result = await postService.find(query);
-            handleSuccessOrErrorMessage(false, "All post data", res, result );
+            let sortByObj = ['title','date','upVote','downVote'];
+            if(sortByObj.includes(req.query.sortBy)){
+                filter(req, res);
+            }else{
+                let query = { deletedAt: {$exists: false}};
+                const result = await postService.retrieve(query);
+                handleSuccessOrErrorMessage(false, "All post data", res, result );
+            }
         }catch(err){
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
@@ -87,6 +98,17 @@ module.exports = {
         }catch(err){
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
-    }
+    },
+}
 
+async function filter(req, res){
+    try{
+        let sortBy = req.query.sortBy;
+        let sortField = sortBy === 'title'|| sortBy === 'upVote' || sortBy === 'downVote' ? sortBy : 'createdAt';
+        let sortDirection = req.query.sortOrder === 'ASC' ? 'ASC' : 'DESC';
+        const result = await postService.filter(sortField, sortDirection);
+        handleSuccessOrErrorMessage(false, "Filter result", res, result, sortDirection);
+    }catch(err){
+        handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
+    }
 }
