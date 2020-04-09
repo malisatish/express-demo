@@ -11,10 +11,10 @@ const self = module.exports = {
     },
 
     update: async (query = {}, objData = {}) => {
-        return await TagModel.findOneAndUpdate(query, { $set: objData});
+        return await TagModel.findOneAndUpdate(query, {$set: objData});
     },
 
     remove: async (query) => {
         return await TagModel.deleteOne(query);
-    }
+    },
 }

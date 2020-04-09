@@ -41,5 +41,12 @@ exports.validate = (method) => {
                 param('id', 'Tag id is required').exists({checkNull: true,checkFalsy: true})
             ]
         }
+
+        case 'vote': {
+            return [
+                param('id', 'Post id is required').exists({checkNull: true,checkFalsy: true}),
+                body('vote','vote parameter is required').exists(),
+            ]
+        }
     }
 }

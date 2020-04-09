@@ -8,6 +8,14 @@ const PostSchema = new Schema({
             type: String
         },
         tags: [],
+        upVote: {
+            type: Number,
+            default: 0
+        },
+        downVote: {
+            type: Number,
+            default: 0
+        },
         createdAt: {
             type: String
         },

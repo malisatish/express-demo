@@ -14,8 +14,8 @@ const self = module.exports = {
         
     },
 
-    update: async (query = {}, objData = {}) => {
-        return await PostModel.findOneAndUpdate(query, {$set: objData});
+    update: async (query = {}, instance = {}) => {
+        return await PostModel.findOneAndUpdate(query, instance);
     },
 
     remove: async (query) => {
