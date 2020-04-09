@@ -1,7 +1,7 @@
 const { postService } = require('../services');
 const { PostModel } = require('../models');
 const { handleSuccessOrErrorMessage, currentTimeStamp } = require('../helper/helper');
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 
 module.exports = {
     addPost: async (req, res) => {
@@ -23,7 +23,8 @@ module.exports = {
 
     getPost: async (req, res) => {
         try{
-            const result = await postService.find();
+            let query = {deletedAt: { $exists: false}};
+            const result = await postService.find(query);
             handleSuccessOrErrorMessage(false, "All post data", res, result );
         }catch(err){
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
@@ -32,19 +33,31 @@ module.exports = {
     
     updatePost: async(req, res) => {
         try{
-            let objData = req.body;
-            let query = { _id: req.params.postId};
-            objData.updateAt = currentTimeStamp();
-            const result = await postService.update(query, objData);
-            console.log("updated result", result)
-            handleSuccessOrErrorMessage(false, "Post updated", res, result );
+            const errors = await validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() });
+            } else {
+                let objData = req.body;
+                let query = { _id: req.params.postId};
+                objData.updateAt = currentTimeStamp();
+                const result = await postService.update(query, objData);
+                handleSuccessOrErrorMessage(false, "Post updated", res, result );
+            }
         }catch(err){
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
     },
 
     deletePost: async(req, res) => {
-
+        try{
+            let query = {_id: req.params.id};
+            const objData = {};
+            objData.deletedAt = currentTimeStamp();
+            const result = await postService.update(query, objData);
+            handleSuccessOrErrorMessage(false, "Post deleted", res, result );
+        }catch(err){
+            handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
+        }
     }
 
 }

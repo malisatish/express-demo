@@ -2,15 +2,19 @@ const { TagModel } = require('../models')
 
 const self = module.exports = {
     /* Create new user */
-    create: async (obj) => {
-        return await TagModel.create(obj)
+    create: async (objData) => {
+        return await TagModel.create(objData);
     },
 
-    find: async () => {
-        return await TagModel.find();
+    find: async (query = {}, extraOptions = {}) => {
+        return await TagModel.find(query, extraOptions);
     },
 
-    remove: async (ObjectId) => {
-        return await TagModel.deleteOne({ _id: ObjectId});
+    update: async (query = {}, objData = {}) => {
+        return await TagModel.findOneAndUpdate(query, { $set: objData});
+    },
+
+    remove: async (query) => {
+        return await TagModel.deleteOne(query);
     }
 }

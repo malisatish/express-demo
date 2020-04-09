@@ -12,11 +12,13 @@ router.get('/ping', (req,res,next)=>{
 router.post('/post', validator.validate('post'), postCtrl.addPost);
 router.get('/post', postCtrl.getPost);
 router.put('/post/:id', validator.validate('updatePost'),postCtrl.updatePost);
+router.delete('/post/:id', validator.validate('deletePost'),postCtrl.deletePost)
 
 //Tag route
-router.post('/tag', tagCtrl.addTag);
+router.post('/tag', validator.validate('tag'), tagCtrl.addTag);
 router.get('/tag', tagCtrl.getTag);
-router.delete('/tag/:id', tagCtrl.deleteTag);
+router.put('/tag/:id', validator.validate('updateTag'), tagCtrl.updateTag)
+router.delete('/tag/:id', validator.validate('deleteTag'), tagCtrl.deleteTag);
 
 
 router.all('*', (req, res) => {

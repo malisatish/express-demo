@@ -1,12 +1,21 @@
 const { TagModel } = require('../models');
 const { tagService } = require('../services');
-const { handleSuccessOrErrorMessage } = require('../helper/helper');
+const { handleSuccessOrErrorMessage, currentTimeStamp } = require('../helper/helper');
+const { validationResult } = require('express-validator');
 
 module.exports = {
     addTag: async (req, res) => {
         try{
-            const result = await tagService.create(req.body);
-            handleSuccessOrErrorMessage(false, "New Tag added", res, result );
+            const errors = await validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() });
+            } else {
+                let objData = req.body;
+                objData.createdAt = currentTimeStamp();
+                objData.updatedAt = currentTimeStamp();
+                const result = await tagService.create(objData);
+                handleSuccessOrErrorMessage(false, "New Tag added", res, result );
+                }
         }catch(err){
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
@@ -14,8 +23,26 @@ module.exports = {
 
     getTag: async (req, res) => {
         try{
-            const result = await tagService.find();
+            let query = {deletedAt: { $exists: false}};
+            const result = await tagService.find(query);
             handleSuccessOrErrorMessage(false, "All tags data", res, result );
+        }catch(err){
+            handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
+        }
+    },
+
+    updateTag: async (req, res) => {
+        try{
+            const errors = await validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() });
+            } else {
+                let query = {_id: req.params.id};
+                let objData = req.body;
+                objData.updatedAt = currentTimeStamp();
+                const result = await tagService.update(query, objData);
+                handleSuccessOrErrorMessage(false, "Tag updated", res, result );
+            }
         }catch(err){
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
@@ -23,9 +50,16 @@ module.exports = {
 
     deleteTag: async (req, res) => {
         try{
-            let id = req.params.id;
-            const result = await tagService.remove(id)
-            handleSuccessOrErrorMessage(false, "Deleted tag data", res, result );
+            const errors = await validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() });
+            } else {
+                let query = {_id: req.params.id};
+                let objData = {};
+                objData.deletedAt = currentTimeStamp();
+                const result = await tagService.update(query, objData);
+                handleSuccessOrErrorMessage(false, "Deleted tag data", res, result );
+            }
         }catch(err){
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }

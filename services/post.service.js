@@ -6,8 +6,8 @@ const self = module.exports = {
         return await PostModel.create(objData);
     },  
 
-    find: async () => {
-        return await PostModel.find();
+    find: async (query = {}, extraOptions = {}) => {
+        return await PostModel.find(query, extraOptions);
     },
 
     findOne: async () => {
@@ -15,7 +15,7 @@ const self = module.exports = {
     },
 
     update: async (query = {}, objData = {}) => {
-        return await PostModel.findOneAndUpdate(query, {$set: objData}, {new: true});
+        return await PostModel.findOneAndUpdate(query, {$set: objData});
     },
 
     remove: async (query) => {

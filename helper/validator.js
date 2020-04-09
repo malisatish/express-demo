@@ -1,7 +1,6 @@
-const { body, query,param } = require('express-validator/check');
+const { body, query,param } = require('express-validator');
 
 exports.validate = (method) => {
-    console.log('validator', method)
     switch(method){
         case 'post': {
             return [
@@ -15,6 +14,31 @@ exports.validate = (method) => {
                 body('title','Please enter title').exists({checkNull: true,checkFalsy: true}),
                 body('body','Body data is required').exists({checkNull: true,checkFalsy: true}),
                 param('id', 'post id is required').exists({checkNull: true,checkFalsy: true})
+            ]
+        }
+
+        case 'deletePost': {
+            return [
+                param('id', 'post id is required').exists({checkNull: true,checkFalsy: true})
+            ]
+        }
+
+        case 'tag': {
+            return [
+                body('name','Tag name is required').exists({checkNull: true,checkFalsy: true}),
+            ]
+        }
+
+        case 'updateTag': {
+            return [
+                body('name','Tag name is required').exists({checkNull: true,checkFalsy: true}),
+                param('id', 'Tag id is required').exists({checkNull: true,checkFalsy: true})
+            ]
+        }
+
+        case 'deleteTag': {
+            return [
+                param('id', 'Tag id is required').exists({checkNull: true,checkFalsy: true})
             ]
         }
     }
