@@ -13,3 +13,11 @@ Node.js Version | NPM Version | MongoDB Version
 - [x] Controller - post, tag
 - [x] API for add and show all post data
 - [x] API for add tags and show all tags data
+
+## Installation
+$ npm install
+
+## Running the app
+# development
+$ NODE_ENV=dev npm start
+
