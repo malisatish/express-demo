@@ -1,3 +1,5 @@
+'use strict';
+
 const { TagModel } = require('../models');
 const { tagService } = require('../services');
 const { handleSuccessOrErrorMessage, currentTimeStamp } = require('../helper/helper');

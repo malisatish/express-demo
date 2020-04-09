@@ -1,3 +1,5 @@
+'use strict';
+
 const { body, query,param } = require('express-validator');
 
 exports.validate = (method) => {

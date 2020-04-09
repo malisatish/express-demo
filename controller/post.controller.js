@@ -18,7 +18,6 @@ module.exports = {
                         objData.tags = result;
                     });
                 }
-                console.log("object", objData)
                 objData.createdAt = currentTimeStamp();
                 objData.updatedAt = currentTimeStamp();
                 const result = await postService.create(objData);
@@ -32,6 +31,7 @@ module.exports = {
     getPost: async (req, res) => {
         try {
             let sortByObj = ['title', 'date', 'upVote', 'downVote'];
+            //check for filter
             if (sortByObj.includes(req.query.sortBy)) {
                 filter(req, res);
             } else {
@@ -52,6 +52,12 @@ module.exports = {
             } else {
                 let objData = req.body;
                 let query = { _id: req.params.id };
+                //if tag then insert 
+                if (objData.tags.length > 0) {
+                    await tagService.insert(req.body.tags).then((result) => {
+                        objData.tags = result;
+                    });
+                }
                 objData.updateAt = currentTimeStamp();
                 const result = await postService.update(query, { $set: objData });
                 handleSuccessOrErrorMessage(false, "Post updated", res, result);

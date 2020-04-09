@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     currentTimeStamp: ()=> Math.floor(new Date() / 1000),
 

@@ -32,6 +32,7 @@ const self = module.exports = {
     },
 
     retrieve: async (query = { }, sortField = null, sortDirection = null) => {
+        //Fetch result from two tables
         let pipeline = [
             {
                 $match: query
@@ -67,11 +68,12 @@ const self = module.exports = {
                 }
             }
         ];
+        //Sort Result
         if(sortField !== null){
-            let query = {$sort: {
-                sortField: sortDirection !== null ? sortDirection :-1
-              }}
-            pipeline.push(query);
+            let obj = {}
+            obj[sortField]=(sortDirection !== null ? sortDirection :-1);
+            let qry = {$sort: obj};
+            pipeline.push(qry);
         }
 
         return await PostModel.aggregate(pipeline);
