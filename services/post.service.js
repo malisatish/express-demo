@@ -70,7 +70,7 @@ const self = module.exports = {
         ];
         //match result
         if(matchQuery !== null){
-            console.log("matchQuery", matchQuery)
+            //console.log("matchQuery", matchQuery)
             let obj = {$match: matchQuery};
             pipeline.push(obj);
         } 
