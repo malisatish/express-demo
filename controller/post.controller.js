@@ -6,6 +6,7 @@ const { handleSuccessOrErrorMessage, currentTimeStamp } = require('../helper/hel
 const { validationResult } = require('express-validator');
 
 module.exports = {
+    /* Add new post */
     addPost: async (req, res) => {
         try {
             const errors = await validationResult(req); //validation error 
@@ -28,7 +29,7 @@ module.exports = {
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
     },
-
+    /*  Get post data*/
     getPost: async (req, res) => {
         try {
             let sortByObj = ['title', 'date', 'upVote', 'downVote'];
@@ -44,7 +45,7 @@ module.exports = {
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
     },
-
+    /* Update post */
     updatePost: async (req, res) => {
         try {
             const errors = await validationResult(req);
@@ -67,7 +68,7 @@ module.exports = {
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
     },
-
+    /* Set deleted date for post */
     deletePost: async (req, res) => {
         try {
             const errors = await validationResult(req);
@@ -76,7 +77,7 @@ module.exports = {
             } else {
                 let query = { _id: req.params.id };  //query for delete post 
                 const objData = {};
-                objData.deletedAt = currentTimeStamp();
+                objData.deletedAt = currentTimeStamp(); //set UNIX_TIMESTAMP for deletedAt
                 const result = await postService.update(query, { $set: objData }); //call to update Deleted data
                 handleSuccessOrErrorMessage(false, "Post deleted", res, result);
             }
@@ -84,7 +85,7 @@ module.exports = {
             handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);
         }
     },
-
+    /* Set upVote and downVote for post */
     postVote: async (req, res) => {
         try {
             const errors = await validationResult(req);
@@ -110,11 +111,12 @@ module.exports = {
     },
 }
 
+/* Filter the data according to filter variable */
 async function filter(req, res) {
     try {
         let sortBy = req.query.sortBy;
-        let sortField = sortBy === 'title' || sortBy === 'upVote' || sortBy === 'downVote' ? sortBy : 'createdAt';
-        let sortDirection = req.query.sortOrder === 'ASC' ? 1 : -1;
+        let sortField = sortBy === 'title' || sortBy === 'upVote' || sortBy === 'downVote' ? sortBy : 'createdAt'; //variable for sort data
+        let sortDirection = req.query.sortOrder === 'ASC' ? 1 : -1; // Sort the data
         let query  = { deletedAt: { $exists: false } };
         let matchQuery = req.query.q !== undefined ? { "tags.name": { $regex: req.query.q, $options: 'i'}} : null; //match tag like
         const result = await postService.retrieve(query,sortField, sortDirection, matchQuery); //retrive data according to filter
