@@ -111,7 +111,7 @@ module.exports = {
     },
 }
 
-/* Filter the data according to filter variable */
+/* Filter the data according to  query paramter */
 async function filter(req, res) {
     try {
         let sortBy = req.query.sortBy;
