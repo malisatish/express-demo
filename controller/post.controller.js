@@ -32,7 +32,7 @@ module.exports = {
         try {
             let sortByObj = ['title', 'date', 'upVote', 'downVote'];
             //check for filter
-            if (sortByObj.includes(req.query.sortBy)) {
+            if (sortByObj.includes(req.query.sortBy) || req.query.q !== undefined) {
                 filter(req, res);
             } else {
                 let query = { deletedAt: { $exists: false } };
@@ -52,7 +52,7 @@ module.exports = {
             } else {
                 let objData = req.body;
                 let query = { _id: req.params.id };
-                //if tag then insert 
+                //if tag then insert id
                 if (objData.tags.length > 0) {
                     await tagService.insert(req.body.tags).then((result) => {
                         objData.tags = result;
@@ -115,7 +115,8 @@ async function filter(req, res) {
         let sortField = sortBy === 'title' || sortBy === 'upVote' || sortBy === 'downVote' ? sortBy : 'createdAt';
         let sortDirection = req.query.sortOrder === 'ASC' ? 1 : -1;
         let query  = { deletedAt: { $exists: false } };
-        const result = await postService.retrieve(query,sortField, sortDirection);
+        let matchQuery = req.query.q !== undefined ? { "tags.name": { $regex: req.query.q, $options: 'i'}} : null;
+        const result = await postService.retrieve(query,sortField, sortDirection, matchQuery);
         handleSuccessOrErrorMessage(false, "Filter result", res, result, sortDirection);
     } catch (err) {
         handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);

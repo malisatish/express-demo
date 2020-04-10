@@ -5,13 +5,13 @@ module.exports = {
 
     handleSuccessOrErrorMessage: (err, message, res, data,status,param) => {
         if (!err) {
-            response = {'error': false, 'message': message};
+            let response = {'error': false, 'message': message};
             if (typeof data !== undefined) {
                 response.data = data;
             }
             res.status(200).send(response);
         } else {
-            response = {'error': true, 'message': message };
+           let response = {'error': true, 'message': message };
             if(data !== undefined || param !== undefined){
                 response.data = data
                 response.param = param

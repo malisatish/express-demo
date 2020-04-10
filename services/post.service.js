@@ -17,7 +17,7 @@ const self = module.exports = {
     },
 
     update: async (query = {}, instance = {}) => {
-        return await PostModel.findOneAndUpdate(query, instance);
+        return await PostModel.findOneAndUpdate(query, instance, (err, doc)=>{});
     },
 
     remove: async (query) => {
@@ -31,7 +31,7 @@ const self = module.exports = {
         return await PostModel.find(query, extraOptions, option);
     },
 
-    retrieve: async (query = { }, sortField = null, sortDirection = null) => {
+    retrieve: async (query = { }, sortField = null, sortDirection = null, matchQuery = null) => {
         //Fetch result from two tables
         let pipeline = [
             {
@@ -68,6 +68,12 @@ const self = module.exports = {
                 }
             }
         ];
+        //match result
+        if(matchQuery !== null){
+            console.log("matchQuery", matchQuery)
+            let obj = {$match: matchQuery};
+            pipeline.push(obj);
+        } 
         //Sort Result
         if(sortField !== null){
             let obj = {}
@@ -75,7 +81,6 @@ const self = module.exports = {
             let qry = {$sort: obj};
             pipeline.push(qry);
         }
-
         return await PostModel.aggregate(pipeline);
     }
 }
