@@ -2,6 +2,7 @@
 
 const { body, query,param } = require('express-validator');
 
+/* Validation check accroding to variable */
 exports.validate = (method) => {
     switch(method){
         case 'post': {
