@@ -8,19 +8,20 @@ const { validationResult } = require('express-validator');
 module.exports = {
     addPost: async (req, res) => {
         try {
-            const errors = await validationResult(req);
+            const errors = await validationResult(req); //validation error 
             if (!errors.isEmpty()) {
                 return res.status(422).json({ errors: errors.array() });
             } else {
                 let objData = req.body;
+                // insert tags data and return tag id
                 if (objData.tags.length > 0) {
                     await tagService.insert(req.body.tags).then((result) => {
                         objData.tags = result;
                     });
                 }
-                objData.createdAt = currentTimeStamp();
+                objData.createdAt = currentTimeStamp();     //add UNIX_TIMESTAMP value
                 objData.updatedAt = currentTimeStamp();
-                const result = await postService.create(objData);
+                const result = await postService.create(objData);  //create new post
                 handleSuccessOrErrorMessage(false, "New post added", res, result);
             }
         } catch (err) {
@@ -33,10 +34,10 @@ module.exports = {
             let sortByObj = ['title', 'date', 'upVote', 'downVote'];
             //check for filter
             if (sortByObj.includes(req.query.sortBy) || req.query.q !== undefined) {
-                filter(req, res);
+                filter(req, res);  //calling filter method
             } else {
-                let query = { deletedAt: { $exists: false } };
-                const result = await postService.retrieve(query);
+                let query = { deletedAt: { $exists: false } }; //query for post that have no deleted time
+                const result = await postService.retrieve(query); //retrive post result
                 handleSuccessOrErrorMessage(false, "All post data", res, result);
             }
         } catch (err) {
@@ -52,7 +53,7 @@ module.exports = {
             } else {
                 let objData = req.body;
                 let query = { _id: req.params.id };
-                //if tag then insert id
+                // insert tags data and return tag id
                 if (objData.tags.length > 0) {
                     await tagService.insert(req.body.tags).then((result) => {
                         objData.tags = result;
@@ -73,10 +74,10 @@ module.exports = {
             if (!errors.isEmpty()) {
                 return res.status(422).json({ errors: errors.array() });
             } else {
-                let query = { _id: req.params.id };
+                let query = { _id: req.params.id };  //query for delete post 
                 const objData = {};
                 objData.deletedAt = currentTimeStamp();
-                const result = await postService.update(query, { $set: objData });
+                const result = await postService.update(query, { $set: objData }); //call to update Deleted data
                 handleSuccessOrErrorMessage(false, "Post deleted", res, result);
             }
         } catch (err) {
@@ -92,9 +93,9 @@ module.exports = {
             } else {
                 let isVote = req.body.vote;
                 if (isVote === true || isVote === false) {
-                    let query = { _id: req.params.id };
+                    let query = { _id: req.params.id }; // query for find post using id
                     let instance = {};
-                    instance.$inc = isVote ? { upVote: 1 } : { downVote: 1 };
+                    instance.$inc = isVote ? { upVote: 1 } : { downVote: 1 }; // query for increment upVote or downVote
                     instance.$set = { updateAt: currentTimeStamp() };
                     const result = await postService.update(query, instance);
                     handleSuccessOrErrorMessage(false, "Vote to post successfully", res, result);
@@ -115,8 +116,8 @@ async function filter(req, res) {
         let sortField = sortBy === 'title' || sortBy === 'upVote' || sortBy === 'downVote' ? sortBy : 'createdAt';
         let sortDirection = req.query.sortOrder === 'ASC' ? 1 : -1;
         let query  = { deletedAt: { $exists: false } };
-        let matchQuery = req.query.q !== undefined ? { "tags.name": { $regex: req.query.q, $options: 'i'}} : null;
-        const result = await postService.retrieve(query,sortField, sortDirection, matchQuery);
+        let matchQuery = req.query.q !== undefined ? { "tags.name": { $regex: req.query.q, $options: 'i'}} : null; //match tag like
+        const result = await postService.retrieve(query,sortField, sortDirection, matchQuery); //retrive data according to filter
         handleSuccessOrErrorMessage(false, "Filter result", res, result, sortDirection);
     } catch (err) {
         handleSuccessOrErrorMessage(true, `Error occured : ${err}`, res);

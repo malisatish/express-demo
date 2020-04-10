@@ -27,7 +27,6 @@ const self = module.exports = {
     filter: async (sortField, sortDirection, extraOptions = {}) => {
         let query = { deletedAt: { $exists: false } };
         let option = { sort: (sortDirection === 'ASC' ? '' : '-') + sortField };
-        console.log("option", sortDirection, option)
         return await PostModel.find(query, extraOptions, option);
     },
 
@@ -38,12 +37,12 @@ const self = module.exports = {
                 $match: query
             },
             {
-                $unwind: {
+                $unwind: {          //Deconstructs an array field
                     path: "$tags"
                 }
             },
             {
-                $lookup: {
+                $lookup: {              //get data from another table
                     from: "tags",
                     localField: "tags",
                     foreignField: "_id",
@@ -56,7 +55,7 @@ const self = module.exports = {
                 }
             },
             {
-                $group: {
+                $group: {               //Group all data by post
                     _id: "$_id",
                     tags: { $push: "$tags" },
                     upVote: { $first: "$upVote" },
@@ -70,7 +69,6 @@ const self = module.exports = {
         ];
         //match result
         if(matchQuery !== null){
-            //console.log("matchQuery", matchQuery)
             let obj = {$match: matchQuery};
             pipeline.push(obj);
         } 

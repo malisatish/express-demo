@@ -15,7 +15,7 @@ const self = module.exports = {
     findOne: async (query) => {
         return await TagModel.findOne(query);
     },
-
+    // update result and return updated result
     update: async (query = {}, objData = {}) => {
         return await TagModel.findOneAndUpdate(query, {$set: objData}, (err, doc)=>{});
     },
@@ -24,6 +24,7 @@ const self = module.exports = {
         return await TagModel.deleteOne(query);
     },
 
+    // Insert tag data and return id
     insert: async (tags) => {
         let tagId = [];
 
