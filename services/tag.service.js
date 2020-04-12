@@ -17,7 +17,8 @@ const self = module.exports = {
     },
     // update result and return updated result
     update: async (query = {}, objData = {}) => {
-        return await TagModel.findOneAndUpdate(query, {$set: objData}, (err, doc)=>{});
+        await TagModel.updateOne(query, {$set: objData});
+        return await TagModel.findOne(query);
     },
 
     remove: async (query) => {
