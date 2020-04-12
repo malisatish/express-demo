@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 const apiRouter = require('./routes/api');
 const mongoConnection = require('./config/mongoose_connection');
 
@@ -14,6 +15,8 @@ mongoConnection.connect();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+//cross-origin sharing
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

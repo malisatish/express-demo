@@ -11,6 +11,7 @@ const tagCtrl = require('../controller/tag.controller');
 //Post route
 router.post('/post', validator.validate('post'), postCtrl.addPost);   //create post
 router.get('/post', postCtrl.getPost);  //get post
+router.get('/post/:id', postCtrl.getPost);
 router.put('/post/:id', validator.validate('updatePost'), postCtrl.updatePost);   //update post
 router.delete('/post/:id', validator.validate('deletePost'), postCtrl.deletePost);  //delete post
 router.put('/post/:id/vote', validator.validate('vote'), postCtrl.postVote);  //post vote

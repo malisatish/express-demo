@@ -42,7 +42,7 @@ const self = module.exports = {
                 }
             },
             {
-                $lookup: {              //get data from another table
+                $lookup: {              //Get data from another table
                     from: "tags",
                     localField: "tags",
                     foreignField: "_id",
