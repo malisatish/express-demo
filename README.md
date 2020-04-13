@@ -14,10 +14,16 @@ Node.js Version | NPM Version | MongoDB Version
 - [x] API for add and show all post data
 - [x] API for add tags, edit,delete and show all tags data
 - [x] POST API backend for user can edit, delete, filter by tag and order post by title, updatedDate, upVote, downVote
+- [x] Note - User can upVote and downVote as many as want
 
 ## Installation
 ```bash
 $ npm install
+```
+## Configure the application
+Create a configuration file for application:
+```bash
+cp .env.example .env
 ```
 
 ## Running the app
