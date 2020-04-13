@@ -58,13 +58,13 @@ const self = module.exports = {
             {
                 $group: {               //Group all data by post
                     _id: "$_id",
-                    tags: { $push: "$tags" },
-                    upVote: { $first: "$upVote" },
-                    downVote: { $first: "$downVote" },
-                    title: { $first: "$title" },
-                    body: { $first: "$body" },
-                    createdAt: { $first: "$createdAt" },
-                    updatedAt: { $first: "$updatedAt" }
+                    tags: {$push: "$tags"},
+                    upVote: {$first: "$upVote"},
+                    downVote: {$first: "$downVote"},
+                    title: {$first: "$title"},
+                    body: {$first: "$body"},
+                    createdAt: {$first: "$createdAt"},
+                    updatedAt: {$first: "$updatedAt"}
                 }
             },
             {
@@ -74,7 +74,7 @@ const self = module.exports = {
                     upVote: "$upVote",
                     downVote: "$downVote",
                     title: "$title",
-                    titleSort: {$toLower : "$title" },
+                    titleSort: {$toLower : "$title"},
                     body: "$body",
                     createdAt: "$createdAt",
                     updatedAt: "$updatedAt"
