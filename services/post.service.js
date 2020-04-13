@@ -68,14 +68,14 @@ const self = module.exports = {
                 }
             },
             {
-                $project: {              
+                $project: {          //Include field for output    
                     _id: "$_id",
                     tags: "$tags",
                     upVote: "$upVote",
                     downVote: "$downVote",
                     title: "$title",
-                    titleSort: { $toLower :  "$title" } ,
-                    body: "$body" ,
+                    titleSort: {$toLower : "$title" },
+                    body: "$body",
                     createdAt: "$createdAt" ,
                     updatedAt: "$updatedAt"
                 }
