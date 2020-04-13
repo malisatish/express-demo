@@ -1,10 +1,9 @@
 'use strict';
-
+const { validationResult } = require('express-validator');
+const mongoose = require('mongoose'); 
 const { postService, tagService } = require('../services');
 const { PostModel } = require('../models');
 const { handleSuccessOrErrorMessage, currentTimeStamp } = require('../helper/helper');
-const { validationResult } = require('express-validator');
-const mongoose = require('mongoose'); 
 
 module.exports = {
     /* Add new post */
@@ -33,14 +32,14 @@ module.exports = {
     /*  Get post data*/
     getPost: async (req, res) => {
         try {
-            let sortByObj = ['title', 'date', 'upVote', 'downVote'];
+            let sortByArr = ['title', 'date', 'upVote', 'downVote'];
             //check for filter
-            if (sortByObj.includes(req.query.sortBy) || req.query.q !== undefined) {
+            if (sortByArr.includes(req.query.sortBy) || req.query.q !== undefined) {
                 filter(req, res);  //calling filter method
             } else {
                 let query = { deletedAt: { $exists: false } }; //query for post that have no deleted time
                 if(req.params.id !== undefined){    
-                    query._id=mongoose.Types.ObjectId(req.params.id);       // get result by post Id
+                    query._id = mongoose.Types.ObjectId(req.params.id);       // get result by post Id
                 }
                 const result = await postService.retrieve(query); //retrive post result
                 handleSuccessOrErrorMessage(false, "All post data", res, result);
@@ -119,7 +118,8 @@ module.exports = {
 async function filter(req, res) {
     try {
         let sortBy = req.query.sortBy;
-        let sortField = sortBy === 'title' || sortBy === 'upVote' || sortBy === 'downVote' ? sortBy : 'createdAt'; //variable for sort data
+        let sortByArr = ['title', 'upVote', 'downVote'];       //sort array
+        let sortField = sortByArr.includes(sortBy) ? sortBy : 'createdAt'; //variable for sort data
         let sortDirection = req.query.sortOrder === 'ASC' ? 1 : -1; // Sort the data
         let query  = { deletedAt: { $exists: false } };
         let matchQuery;     // Define matchQuery varible
@@ -132,7 +132,10 @@ async function filter(req, res) {
                 tagArr.push({ "tags.name": { $regex: tag, $options: 'i'}})      //add each tage query in array
             }); 
             matchQuery.$or = tagArr;        // Put array of tag in OR condtion for matchQuery
+        }else{
+            matchQuery = null;
         }
+        
         const result = await postService.retrieve(query,sortField, sortDirection, matchQuery); //retrive data according to filter
         handleSuccessOrErrorMessage(false, "Filter result", res, result, sortDirection);
     } catch (err) {
