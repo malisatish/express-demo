@@ -76,7 +76,7 @@ const self = module.exports = {
                     title: "$title",
                     titleSort: {$toLower : "$title" },
                     body: "$body",
-                    createdAt: "$createdAt" ,
+                    createdAt: "$createdAt",
                     updatedAt: "$updatedAt"
                 }
             }
