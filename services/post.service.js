@@ -66,6 +66,19 @@ const self = module.exports = {
                     createdAt: { $first: "$createdAt" },
                     updatedAt: { $first: "$updatedAt" }
                 }
+            },
+            {
+                $project: {              
+                    _id: "$_id",
+                    tags: "$tags",
+                    upVote: "$upVote",
+                    downVote: "$downVote",
+                    title: "$title",
+                    titleSort: { $toLower :  "$title" } ,
+                    body: "$body" ,
+                    createdAt: "$createdAt" ,
+                    updatedAt: "$updatedAt"
+                }
             }
         ];
         //match result
@@ -76,10 +89,12 @@ const self = module.exports = {
         //Sort Result
         if(sortField !== null){
             let obj = {}
+            let sortField = sortField == 'title' ? 'titleSort' : sortField; //sorting for case insensitive
             obj[sortField]=(sortDirection !== null ? sortDirection :-1);
             let qry = {$sort: obj};
             pipeline.push(qry);
         }
+
         return await PostModel.aggregate(pipeline);
     }
 }
