@@ -15,7 +15,7 @@ module.exports = {
             } else {
                 let objData = req.body;
                 // insert tags data and return tag id
-                if (objData.tags.length > 0) {
+                if (objData.tags !== undefined && objData.tags.length > 0) {
                     await tagService.insert(req.body.tags).then((result) => {
                         objData.tags = result;
                     });
@@ -58,7 +58,7 @@ module.exports = {
                 let objData = req.body;
                 let query = { _id: req.params.id };
                 // insert tags data and return tag id
-                if (objData.tags.length > 0) {
+                if (objData.tags !== undefined && objData.tags.length > 0) {
                     await tagService.insert(req.body.tags).then((result) => {
                         objData.tags = result;
                     });
