@@ -89,7 +89,7 @@ const self = module.exports = {
         //Sort Result
         if(sortField !== null){
             let obj = {}
-            let sortField = sortField == 'title' ? 'titleSort' : sortField; //sorting for case insensitive
+            sortField = (sortField == 'title') ? 'titleSort' : sortField; //sorting for case insensitive
             obj[sortField]=(sortDirection !== null ? sortDirection :-1);
             let qry = {$sort: obj};
             pipeline.push(qry);
