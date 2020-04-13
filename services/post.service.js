@@ -39,7 +39,8 @@ const self = module.exports = {
             },
             {
                 $unwind: {          //Deconstructs an array field
-                    path: "$tags"
+                    path: "$tags",
+                    "preserveNullAndEmptyArrays": true
                 }
             },
             {
@@ -52,7 +53,8 @@ const self = module.exports = {
             },
             {
                 $unwind: {
-                    path: "$tags"
+                    path: "$tags",
+                    "preserveNullAndEmptyArrays": true
                 }
             },
             {
