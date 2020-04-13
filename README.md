@@ -13,7 +13,7 @@ Node.js Version | NPM Version | MongoDB Version
 - [x] Controller - post, tag
 - [x] API for add and show all post data
 - [x] API for add tags, edit,delete and show all tags data
-- [x] POST API backend for user can edit, delete, filter by tag and order post by title, updatedDate, upVote, downVote
+- [x] POST API backend for user can edit, delete, filter by tag and order post by title, createdDate, upVote, downVote
 - [x] Note - User can upVote and downVote as many as want
 
 ## Installation
